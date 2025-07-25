@@ -61,7 +61,18 @@ services:
 
 volumes:
   mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${MARIADB_VOLUME_PATH}
+      o: bind
   wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${WORDPRESS_VOLUME_PATH}
+      o: bind
+
 
 secrets:
   mysql_root_password:
