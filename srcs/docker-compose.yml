@@ -59,6 +59,17 @@ services:
       WP_USER: ${WP_USER}
       WP_USER_EMAIL: ${WP_USER_EMAIL}
 
+  static_site:
+    build:
+      context: ./requirements/static_site
+    container_name: static_site
+    ports:
+      - "8080:80"
+    networks:
+      - inception
+
+
+
 volumes:
   mariadb_data:
     driver: local
@@ -72,7 +83,6 @@ volumes:
       type: none
       device: ${WORDPRESS_VOLUME_PATH}
       o: bind
-
 
 secrets:
   mysql_root_password:

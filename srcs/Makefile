@@ -17,3 +17,7 @@ fclean: clean
 	docker rmi -f $$(docker images -q)
 
 re: fclean all
+
+logs:
+	docker compose logs -f
+
