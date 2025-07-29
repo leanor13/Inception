@@ -1,6 +1,6 @@
 NAME=inception
 COMPOSE=docker compose
-YML=docker-compose.yml
+YML=srcs/docker-compose.yml
 
 all: up
 
@@ -19,5 +19,7 @@ fclean: clean
 re: fclean all
 
 logs:
-	docker compose logs -f
+	$(COMPOSE) -f $(YML) logs -f
 
+uplogs: up
+	$(COMPOSE) -f $(YML) logs -f
