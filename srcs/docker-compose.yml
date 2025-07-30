@@ -68,14 +68,29 @@ services:
     networks:
       - inception
 
-  dozzle:
+  ftp:
     build:
-      context: ./requirements/dozzle
-    container_name: dozzle
+      context: ./requirements/ftp
+    container_name: ftp
+    secrets:
+      - ftp_password
+    networks:
+      - inception
     ports:
-      - "9999:8080"
+      - "21:21"
+      - "21100-21110:21100-21110"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - wordpress_data:/home/ftpuser
+
+  filezilla:
+    build:
+      context: ./requirements/filezilla
+    container_name: filezilla
+    ports:
+      - "2121:21"
+      - "2990:990"
+    volumes:
+      - wordpress_data:/home/ftpuser
     networks:
       - inception
 
@@ -104,6 +119,8 @@ secrets:
     file: ../secrets/wp_admin_password
   wp_user_password:
     file: ../secrets/wp_user_password
+  ftp_password:
+    file: ../secrets/ftp_password
 
 networks:
   inception:
