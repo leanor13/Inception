@@ -21,4 +21,6 @@ RUN mkdir -p /var/www/html
 
 EXPOSE 443
 
+# Run nginx in foreground to keep the container alive.
+# "-g" passes the "daemon off;" directive directly to nginx.
 CMD ["nginx", "-g", "daemon off;"]

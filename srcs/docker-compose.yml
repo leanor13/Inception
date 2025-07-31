@@ -1,20 +1,43 @@
 services:
+    # Service for NGINX - the reverse proxy that serves the WordPress site via HTTPS
   nginx:
+
+    # Directory used as build context: sent to Docker daemon during image build.
+    # It must include the Dockerfile and all required files.
     build:
       context: ./requirements/nginx
+      
+    # Assigns a fixed name to the container for easy reference.
     container_name: nginx
+
+    # Ensures this container is started only after WordPress container has started.
     depends_on:
       - wordpress
+
+    # Maps host port 443 (HTTPS) to container port 443.
+    # Ensures the site is only available via HTTPS (not HTTP).
     ports:
       - "443:443"
+
+    # Mounts the 'wordpress_data' volume to /var/www/html inside the container.
+    # This is where NGINX will serve WordPress static and dynamic content.
+    # Also mounts the PHP-FPM socket for communication with WordPress.
     volumes:
       - wordpress_data:/var/www/html
       - /run/php:/run/php
+
+    # Connects this container to a custom user-defined bridge network named 'inception'.
+    # This allows communication with other containers like WordPress and MariaDB.
     networks:
       - inception
+
+    # Loads environment variables from a .env file (which must not be committed to git).
     env_file:
       - .env
+
+    # Automatically restarts the container if it crashes or the system reboots.
     restart: always
+
 
   mariadb:
     build:
