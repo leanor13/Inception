@@ -40,12 +40,27 @@ if ! wp core is-installed --allow-root; then
     --admin_password="$(cat /run/secrets/wp_admin_password)" \
     --admin_email="$WP_ADMIN_EMAIL" \
     --allow-root
-
+  
   wp user create "$WP_USER" "$WP_USER_EMAIL" \
     --user_pass="$(cat /run/secrets/wp_user_password)" \
     --role=author \
     --allow-root
 fi
 
+ wp user update "$WP_ADMIN" --user_pass="$(cat /run/secrets/wp_admin_password)" --allow-root
+ wp user update "$WP_USER" --user_pass="$(cat /run/secrets/wp_user_password)" --allow-root
+
+
 echo "✅ WordPress is installed at https://$DOMAIN_NAME"
+
+# Install and activate Redis Cache plugin
+echo "[5/5] Installing Redis Cache plugin..."
+
+wp plugin install redis-cache --activate --allow-root
+echo "✅ Redis Cache plugin installed and activated"
+wp config set WP_REDIS_HOST redis --allow-root
+wp config set WP_REDIS_PORT 6379 --raw --allow-root
+
+wp redis enable --allow-root
+echo "✅ Redis Cache enabled"
 exec php-fpm7.4 -F

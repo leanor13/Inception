@@ -82,18 +82,14 @@ services:
     volumes:
       - wordpress_data:/home/ftpuser
 
-  filezilla:
+  redis:
     build:
-      context: ./requirements/filezilla
-    container_name: filezilla
+      context: ./requirements/redis
+    container_name: redis
     ports:
-      - "2121:21"
-      - "2990:990"
-    volumes:
-      - wordpress_data:/home/ftpuser
+      - "6379:6379"
     networks:
       - inception
-
 
 
 volumes:
