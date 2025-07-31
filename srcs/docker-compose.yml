@@ -14,12 +14,12 @@ services:
       - inception
     env_file:
       - .env
+    restart: always
 
   mariadb:
     build:
       context: ./requirements/mariadb
     container_name: mariadb
-    restart: unless-stopped
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
@@ -32,6 +32,7 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD_FILE: ../secrets/mysql_user_password
       MYSQL_DATABASE: ${MYSQL_DATABASE}
+    restart: always
 
   wordpress:
     build:
@@ -58,6 +59,7 @@ services:
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
       WP_USER: ${WP_USER}
       WP_USER_EMAIL: ${WP_USER_EMAIL}
+    restart: always
 
   static_site:
     build:
@@ -67,6 +69,7 @@ services:
       - "8080:80"
     networks:
       - inception
+    restart: always
 
   ftp:
     build:
@@ -81,6 +84,7 @@ services:
       - "21100-21110:21100-21110"
     volumes:
       - wordpress_data:/home/ftpuser
+    restart: always
 
   redis:
     build:
@@ -90,6 +94,7 @@ services:
       - "6379:6379"
     networks:
       - inception
+    restart: always
 
   adminer:
     build:
@@ -99,6 +104,7 @@ services:
       - "8081:8081"
     networks:
       - inception
+    restart: always
 
   cadvisor:
     build: ./requirements/cadvisor
