@@ -7,13 +7,14 @@ MARIADB_VOLUME_PATH := /home/$(PC_USER)/data/mariadb
 WORDPRESS_VOLUME_PATH := /home/$(PC_USER)/data/wordpress
 
 SECRETS_DIR := ./secrets
+PASSWORD_LENGTH := 12
 
 gen-secrets:
 	@mkdir -p $(SECRETS_DIR)
 	@for file in ftp_password mysql_root_password mysql_user_password wp_admin_password wp_user_password; do \
 		if [ ! -s $(SECRETS_DIR)/$$file ]; then \
 			echo "Generating $$file..."; \
-			openssl rand -base64 32 > $(SECRETS_DIR)/$$file; \
+			openssl rand -base64 $(PASSWORD_LENGTH) > $(SECRETS_DIR)/$$file; \
 		else \
 			echo "$$file already exists, skipping"; \
 		fi \
