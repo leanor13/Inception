@@ -1,3 +1,4 @@
+# bookworm is the latest stable release of Debian - required for latest cAdvisor
 FROM debian:bookworm
 
 RUN apt update -y && \

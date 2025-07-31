@@ -1,11 +1,9 @@
-FROM debian:bullseye
+FROM alpine:3.20
 
-RUN apt-get update && \
-    apt-get install -y nginx && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache nginx
 
 COPY ./tools/index.html /var/www/html/index.html
-COPY ./conf/default.conf /etc/nginx/sites-available/default
+COPY ./conf/default.conf /etc/nginx/http.d/default.conf
 
 EXPOSE 80
 
