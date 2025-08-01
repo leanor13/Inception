@@ -36,9 +36,6 @@ down:
 clean:
 	$(COMPOSE) -f $(YML) down --volumes
 
-fclean: clean
-	docker rmi -f $$(docker images -q)
-
 fullclean:
 	$(COMPOSE) -f $(YML) down --volumes --rmi all
 	sudo rm -rf $(MARIADB_VOLUME_PATH) $(WORDPRESS_VOLUME_PATH)
